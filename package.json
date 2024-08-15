@@ -2,6 +2,8 @@
   "name": "nextjs-14-onboarding",
   "version": "0.1.0",
   "private": true,
+  "author": "grandFox",
+  "description": "An example on how you can setup an awesome onboarding experience for your users with analytics, dynamic inputs and validations",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
