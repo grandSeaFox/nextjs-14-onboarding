@@ -1,0 +1,38 @@
+.skeleton {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.skeletonAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 10%;
+  background: linear-gradient(90deg, #f0f0f0, #e0e0e0, #f0f0f0);
+  animation: shimmer 4.5s infinite;
+}
+
+.skeletonContent {
+  flex: 1;
+  margin-left: 10px;
+}
+
+.skeletonLine {
+  height: 16px;
+  background: linear-gradient(90deg, #f0f0f0, #e0e0e0, #f0f0f0);
+  animation: shimmer 4.5s infinite;
+  margin-bottom: 5px;
+}
+
+.skeletonLine:last-child {
+  width: 80%;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: 200px 0;
+  }
+}

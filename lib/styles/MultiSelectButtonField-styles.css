@@ -1,0 +1,8 @@
+.grid-layout {
+  @apply w-full grid gap-3 grid-cols-2;
+
+}
+
+.column-layout {
+  @apply w-full flex flex-col gap-3;
+}

@@ -1,0 +1,73 @@
+.text-12 {
+  @apply text-[12px] leading-[16px];
+}
+
+.text-14 {
+  @apply text-[14px] leading-[20px];
+}
+
+.text-16 {
+  @apply text-[16px] leading-[24px];
+}
+
+/* Auth */
+.auth-container {
+  @apply flex min-h-screen w-full justify-between font-inter items-center;
+}
+
+.auth-asset {
+  @apply flex h-screen w-full sticky top-0 items-center justify-center bg-sky-1 max-lg:hidden flex-col gap-10;
+}
+
+.auth-form {
+  @apply flex w-full max-w-[400px] flex-col justify-center py-10 gap-y-3;
+}
+
+.auth-form .form-items {
+  @apply flex flex-col gap-2 m-0;
+}
+
+.auth-form .form-item {
+  @apply flex flex-col gap-1.5 m-0 mt-4 transition-all duration-300 ease-in delay-150 transform-none opacity-100 h-auto;
+}
+
+.auth-form .form-item--hidden {
+  @apply opacity-0 h-0 m-0 overflow-hidden -translate-y-1.5;
+}
+
+.auth-button-group {
+  @apply flex w-full xs:flex-col sm:flex-row items-center mt-5 md:ml-auto md:mb-0 gap-2;
+}
+
+.auth-form .form-item-group {
+  @apply grid sm:grid-cols-2 xs:grid-cols-1 gap-y-2 gap-x-4
+}
+
+.auth-form .form-item--required label::after {
+  @apply text-red-800 ml-1;
+  content: '*';
+}
+
+.form-label {
+  @apply text-14 w-full max-w-[280px] font-medium text-gray-700;
+}
+
+.form-message {
+  @apply text-12 text-red-700;
+}
+
+.form-btn {
+  @apply text-16 rounded-lg border border-appGradient bg-appGradient font-semibold text-white shadow-form;
+}
+
+[data-action='false'] {
+  @apply flex-col 2xl:gap-2
+}
+
+[data-action='true'] {
+  @apply sm:flex-col md:flex-row md:gap-2
+}
+
+.form-link {
+  @apply text-14 cursor-pointer font-medium text-appGradient;
+}
