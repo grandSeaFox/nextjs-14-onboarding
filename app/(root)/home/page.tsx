@@ -11,22 +11,14 @@ import { useAuth } from '@/lib/providers/AuthProvider';
 
 const Home = () => {
   const { isLoading, user, logout } = useAuth();
-  const { trackPageView, trackEvent } = useAnalytics();
-  const pathName = usePathname();
-  useEffect(() => {
-    trackPageView({
-      page_title: 'HomePage',
-      page_path: pathName,
-      context: 'Home',
-    });
-  }, [pathName, trackPageView]);
+  const { trackEvent } = useAnalytics();
+
   if (isLoading || !user) return <Loader />;
 
   const handleClick = () => {
     const buttonClickEvent = {
-      action: 'button_clicked',
+      action: 'button_analytics_home_page',
       event_category: 'button_clicks',
-      value: { buttonName: 'This is the button on the homepage', user_id: user.userId },
     };
     toast({
       duration: 7000,
