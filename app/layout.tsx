@@ -1,5 +1,6 @@
 import { Inter, IBM_Plex_Serif } from 'next/font/google';
 import './globals.css';
+import 'driver.js/dist/driver.css';
 import React from 'react';
 import { Toaster } from '@/components/ui/toaster';
 import GoogleAnalytics from '@/components/GoogleAnalytics';

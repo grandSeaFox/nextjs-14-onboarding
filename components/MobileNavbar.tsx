@@ -12,7 +12,7 @@ const MobileNavbar = () => {
   const pathName = usePathname();
 
   return (
-    <section className="w-full max-w-[264px]">
+    <section className="w-full max-w-[264px]" id="mobile-navbar">
       <Sheet>
         <SheetTrigger>
           <Image src="/icons/hamburger.svg" width={30} height={30} alt="menu icon" className="cursor-pointer" />

@@ -33,7 +33,7 @@ const Footer = ({ type = 'desktop' }: FooterProps) => {
         <h1 className="text-14 truncate font-semibold text-gray-600">{user?.name}</h1>
         <p className="text-14 truncate font-normal text-gray-600">{user?.email}</p>
       </div>
-      <Button variant="link" className="ml-auto pl-4" onClick={() => logout()}>
+      <Button variant="link" className="ml-auto pl-4" onClick={() => logout()} id="button-logout-1">
         <Image src="/icons/logout.svg" fill alt="logout" className="hover:bg-gray-50 rounded" />
       </Button>
     </footer>

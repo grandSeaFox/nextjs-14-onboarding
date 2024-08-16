@@ -13,6 +13,7 @@ export interface ErrorResponse {
 export type ApiResponse = SuccessResponse | ErrorResponse;
 
 export interface SidebarLink {
+  id: string;
   imgURL?: string;
   route: string;
   label: string;

@@ -1,12 +1,15 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Script from 'next/script';
 import { useAuth } from '@/lib/providers/AuthProvider';
 
 const GoogleAnalytics = () => {
-  const { user } = useAuth();
-  const userId = user?.userId;
+  const { isLoading, user } = useAuth();
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <>
@@ -21,7 +24,7 @@ const GoogleAnalytics = () => {
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', '${process.env.NEXT_PUBLIC_MEASUREMENT_ID}', { 'user_id': '${userId}' });
+          gtag('config', '${process.env.NEXT_PUBLIC_MEASUREMENT_ID}', { 'user_id': '${user?.userId}' });
         `}
       </Script>
     </>

@@ -23,10 +23,8 @@ export interface Analytics {
 
 const useAnalytics = (): Analytics => {
   const trackEvent = useCallback(({ action, event_category, value }: Event) => {
-    window.dataLayer.push({
-      event: action,
+    (window as any).gtag('event', action, {
       event_category,
-      event_label: value ? JSON.stringify(value) : undefined,
       ...value,
     });
   }, []);

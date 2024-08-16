@@ -51,10 +51,10 @@ const Home = () => {
       </h1>
       <h1 className="text-24 flex mb-10 text-gray-600">Check out the inputs to know what type of input you can use on your onboarding</h1>
       <div className="flex gap-4">
-        <Button onClick={handleClick} className="w-[150px]">
+        <Button onClick={handleClick} className="w-[150px]" id="button-analytics">
           Test Analytics
         </Button>
-        <Button onClick={() => logout()} className="w-[150px]" iconRight={<Image src="/icons/logout.svg" fill alt="logout" />}>
+        <Button onClick={() => logout()} className="w-[150px]" iconRight={<Image src="/icons/logout.svg" fill alt="logout" />} id="button-logout">
           Logout
         </Button>
       </div>
