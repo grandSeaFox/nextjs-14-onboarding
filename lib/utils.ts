@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { NestedData, OnboardingProps } from './types/auth';
+import { FormItemRow } from './types/auth';
 import { ApiResponse, ErrorResponse, SidebarLink } from '@/lib/types';
 
 export function cn(...inputs: ClassValue[]) {
@@ -136,3 +136,22 @@ export function detectAndApplyChanges<T extends object>(original: any, updated: 
 
   return deepCompareAndUpdate(original, updated) as T;
 }
+
+export const getFormItemClasses = (formItemRow: FormItemRow, formKeyHasValue: (key: string) => boolean) => {
+  const isFormItemHidden = !!(
+    formItemRow[0].inputOptions.visible &&
+    !formKeyHasValue(formItemRow[0].inputOptions.visible) &&
+    !formKeyHasValue(formItemRow[0].key)
+  );
+  return {
+    'form-item': true,
+    'form-item-group': formItemRow.length > 1,
+    'form-item--required': !!formItemRow[0].inputOptions.validations?.required?.value,
+    'form-item--hidden': isFormItemHidden,
+    'form-item--visible': !isFormItemHidden,
+  };
+};
+
+export const getFormItemClassesArray = (formStepBody: FormItemRow[], formKeyHasValue: (key: string) => boolean) => {
+  return formStepBody.map((formItemRow: FormItemRow) => cn(getFormItemClasses(formItemRow, formKeyHasValue)));
+};

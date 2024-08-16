@@ -5,7 +5,7 @@ import { useAuth } from '@/lib/providers/AuthProvider';
 import { useRouter } from 'next/navigation';
 import { HOME_ROUTE } from '@/lib/constants';
 import { RegistrationForms } from '@/lib/models/Register';
-import AuthFormController from './AuthFormController';
+import AuthFormBuilder from './AuthFormBuilder';
 import { useToast } from '@/components/ui/use-toast';
 
 const RegistrationForm = () => {
@@ -35,7 +35,7 @@ const RegistrationForm = () => {
 
   return (
     <div className="flex-center size-full max-sm:px-6">
-      <AuthFormController
+      <AuthFormBuilder
         formStep={formStep}
         step={step}
         goBack={() => {

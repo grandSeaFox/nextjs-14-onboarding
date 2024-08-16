@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { cn, extractTwoLevelValues, toObject } from '@/lib/utils';
+import { cn, extractTwoLevelValues, toObject, getFormItemClassesArray } from '@/lib/utils';
 import { REGISTRATION_ROUTE } from '@/lib/constants';
 import {
   FormStep,
@@ -24,7 +24,7 @@ import useAnalytics from '@/lib/hooks/useAnalytics';
 import { ApiResponse } from '@/lib/types';
 import { toast } from '@/components/ui/use-toast';
 
-interface AuthControllerProps {
+interface AuthFormBuilderProps {
   formStep: BaseFormStep | FormStep<OnboardingProps> | FormStep<SignUpParams> | FormStep<SignInProps>;
   step: number;
   goBack: () => void;
@@ -36,18 +36,7 @@ interface AuthControllerProps {
   setUser?: (user: User) => void;
   totalSteps: number;
 }
-const AuthFormController = ({
-  formStep,
-  step,
-  goBack,
-  goForward,
-  logout,
-  me,
-  isLoading,
-  user,
-  setUser,
-  totalSteps,
-}: AuthControllerProps) => {
+const AuthFormBuilder = ({ formStep, step, goBack, goForward, logout, me, isLoading, user, setUser, totalSteps }: AuthFormBuilderProps) => {
   const [loading, setLoading] = useState(isLoading || false);
   const { trackEvent } = useAnalytics();
   const formStepSchema = formStep.stepValidationSchema;
@@ -59,16 +48,16 @@ const AuthFormController = ({
     defaultValues: {},
   });
 
-  const formKeyHasValue = useCallback(
+  const formItemHasValue = useCallback(
     (formKey: string) => {
       const val = form.getValues(formKey);
-      return Array.isArray(val) ? val.length > 0 : !!val;
+      return Array.isArray(val) ? val.length > 0 : Boolean(val);
     },
     [form],
   );
 
   const flatFieldList = useMemo(() => formStep.body.flat(), [formStep.body]);
-  const numCompletedFields = flatFieldList.filter(({ key }) => formKeyHasValue(key)).length;
+  const numCompletedFields = flatFieldList.filter(({ key }) => formItemHasValue(key)).length;
   const numTotalFields = flatFieldList.length;
 
   const defaultValues: Record<string, any> = useMemo(() => {
@@ -102,22 +91,7 @@ const AuthFormController = ({
     form.clearErrors();
   }, [form, step]);
 
-  const getFormItemClasses = (formItemRow: FormItemRow) => {
-    const isFormItemHidden = !!(
-      formItemRow[0].inputOptions.visible &&
-      !formKeyHasValue(formItemRow[0].inputOptions.visible) &&
-      !formKeyHasValue(formItemRow[0].key)
-    );
-    return {
-      'form-item': true,
-      'form-item-group': formItemRow.length > 1,
-      'form-item--required': !!formItemRow[0].inputOptions.validations?.required?.value,
-      'form-item--hidden': isFormItemHidden,
-      'form-item--visible': !isFormItemHidden,
-    };
-  };
-
-  const formItemClasses = formStep?.body.map((formItemRow: FormItemRow) => cn(getFormItemClasses(formItemRow)));
+  const formItemClasses = getFormItemClassesArray(formStep.body, formItemHasValue);
 
   const handleSubmit = useCallback(
     async (data: any) => {
@@ -199,7 +173,7 @@ const AuthFormController = ({
                         items={formItem.inputOptions.items}
                         defaultValue={defaultValues[formItem.key]}
                         disabled={
-                          (!!formItem.inputOptions.depends && !formKeyHasValue(formItem.inputOptions.depends)) || isLoading || loading
+                          (!!formItem.inputOptions.depends && !formItemHasValue(formItem.inputOptions.depends)) || isLoading || loading
                         }
                       />
                     ))}
@@ -243,4 +217,4 @@ const AuthFormController = ({
   );
 };
 
-export default AuthFormController;
+export default AuthFormBuilder;

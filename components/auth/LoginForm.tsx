@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
-import AuthFormController from './AuthFormController';
+import AuthFormBuilder from './AuthFormBuilder';
 import { LoginForms } from '@/lib/models/Login';
 import { useToast } from '@/components/ui/use-toast';
 import { useAuth } from '@/lib/providers/AuthProvider';
@@ -21,7 +21,7 @@ const LoginForm = () => {
 
   return (
     <div className="flex-center size-full max-sm:px-6">
-      <AuthFormController
+      <AuthFormBuilder
         formStep={formStep}
         step={step}
         goBack={() => {
