@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import Sidebar from '@/components/Sidebar';
 import MobileNavbar from '@/components/MobileNavbar';
 import DriverTour from '@/components/DriverTour';
+import { MobileNavbarProvider } from '@/lib/providers/MobileNavbarProvider';
 
 export const metadata: Metadata = {
   title: 'Home - NextJs-14-Onboarding',
@@ -14,12 +15,12 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     <main className="flex w-full h-full font-inter">
       <Sidebar />
       <div className="flex size-full flex-col">
-        <div className="root-layout">
+        <MobileNavbarProvider>
           <MobileNavbar />
-        </div>
+          <DriverTour />
+        </MobileNavbarProvider>
         <div className="flex w-full h-full flex-col items-center justify-center p-6">{children}</div>
       </div>
-      <DriverTour />
     </main>
   );
 }

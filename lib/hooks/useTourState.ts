@@ -20,7 +20,7 @@ export const useTourState = () => {
     return () => {
       window.removeEventListener('storage', checkTourState);
     };
-  }, []);
+  }, [isLoading]);
 
   return shouldShowTour;
 };

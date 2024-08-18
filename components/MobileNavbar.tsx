@@ -7,13 +7,15 @@ import { usePathname } from 'next/navigation';
 import { HOME_ROUTE, sidebarLinks } from '@/lib/constants';
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from './ui/sheet';
 import Footer from '@/components/Footer';
+import { useMobileNavbar } from '@/lib/providers/MobileNavbarProvider';
 
 const MobileNavbar = () => {
   const pathName = usePathname();
+  const { isOpen, changeNavBar } = useMobileNavbar();
 
   return (
-    <section className="w-full max-w-[264px]" id="mobile-navbar">
-      <Sheet>
+    <section className="w-full max-w-[264px] root-layout" id="mobile-navbar">
+      <Sheet open={isOpen} onOpenChange={changeNavBar}>
         <SheetTrigger>
           <Image src="/icons/hamburger.svg" width={30} height={30} alt="menu icon" className="cursor-pointer" />
         </SheetTrigger>
@@ -39,6 +41,7 @@ const MobileNavbar = () => {
                         className={cn('mobilenav-sheet_close', {
                           'bg-appGradient': isActive,
                         })}
+                        id={link.id}
                       >
                         <Image
                           src={link.imgURL!}
