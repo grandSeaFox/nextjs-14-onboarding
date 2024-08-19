@@ -1,17 +1,18 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense } from 'react';
 import useAnalytics from '@/lib/hooks/useAnalytics';
-import { usePathname } from 'next/navigation';
 import { toast } from '@/components/ui/use-toast';
 import { formatJson } from '@/lib/utils';
 import Image from 'next/image';
 import { useAuth } from '@/lib/providers/AuthProvider';
+import { useDriverTour } from '@/lib/providers/DriveTourProvider';
 
 const Home = () => {
   const { isLoading, user, logout } = useAuth();
   const { trackEvent } = useAnalytics();
+  const { isDriveTourOngoing } = useDriverTour();
 
   if (isLoading || !user) return <Loader />;
 
@@ -43,10 +44,10 @@ const Home = () => {
       </h1>
       <h1 className="text-24 flex mb-10 text-gray-600">Check out the inputs to know what type of input you can use on your onboarding</h1>
       <div className="flex gap-4">
-        <Button onClick={handleClick} className="w-[150px]" id="button-analytics">
+        <Button onClick={handleClick} className="w-[150px]" id="button-analytics" >
           Test Analytics
         </Button>
-        <Button onClick={() => logout()} className="w-[150px]" iconRight={<Image src="/icons/logout.svg" fill alt="logout" />} id="button-logout">
+        <Button onClick={() => logout()} className="w-[150px]" iconRight={<Image src="/icons/logout.svg" fill alt="logout" />} id="button-logout" disabled={isDriveTourOngoing}>
           Logout
         </Button>
       </div>

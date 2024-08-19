@@ -15,7 +15,7 @@ import {
   BaseFormStep,
 } from '@/lib/types/auth';
 import { User } from '@/lib/types/user';
-import { useForm, UseFormReturn } from 'react-hook-form';
+import { useForm, UseFormReturn, useWatch } from 'react-hook-form';
 import { Progress } from '../ui/progress';
 import RegistrationInput from './RegistrationInput';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -48,17 +48,49 @@ const AuthFormBuilder = ({ formStep, step, goBack, goForward, logout, me, isLoad
     defaultValues: {},
   });
 
+  const getMinLength = useCallback((formKey: string) => {
+    if (!formStepSchema || typeof formStepSchema !== 'object' || !('shape' in formStepSchema)) {
+      return 0;
+    }
+    // @ts-ignore
+    const fieldSchema = formStepSchema.shape[formKey];
+    if (!fieldSchema || typeof fieldSchema !== 'object' || !('_def' in fieldSchema)) {
+      return 0;
+    }
+    return fieldSchema._def.minLength?.value ?? 0;
+  }, [formStepSchema]);
+
   const formItemHasValue = useCallback(
-    (formKey: string) => {
-      const val = form.getValues(formKey);
-      return Array.isArray(val) ? val.length > 0 : Boolean(val);
+    (inputType: string, value: any) => {
+      if (inputType === 'multi-select') {
+        return Array.isArray(value) ? value.length : 0;
+      }
+      return Array.isArray(value) ? value.length > 0 : Boolean(value);
     },
-    [form],
+    []
   );
 
   const flatFieldList = useMemo(() => formStep.body.flat(), [formStep.body]);
-  const numCompletedFields = flatFieldList.filter(({ key }) => formItemHasValue(key)).length;
-  const numTotalFields = flatFieldList.length;
+  const formValues = useWatch({ control: form.control });
+
+  const { numCompletedFields, numTotalFields } = useMemo(() => {
+    return flatFieldList.reduce(
+      (acc, { key, inputOptions: { type } }) => {
+        const value = formValues[key];
+        if (type === 'multi-select') {
+          const minLength = getMinLength(key);
+          acc.numTotalFields += minLength || 1;
+          const selectedCount = formItemHasValue(type, value);
+          acc.numCompletedFields += Math.min(selectedCount as number, minLength || 1);
+        } else {
+          acc.numTotalFields += 1;
+          acc.numCompletedFields += formItemHasValue(type, value) ? 1 : 0;
+        }
+        return acc;
+      },
+      { numCompletedFields: 0, numTotalFields: 0 }
+    );
+  }, [flatFieldList, formValues, getMinLength, formItemHasValue]);
 
   const defaultValues: Record<string, any> = useMemo(() => {
     if (isLoading) return {};
@@ -91,7 +123,7 @@ const AuthFormBuilder = ({ formStep, step, goBack, goForward, logout, me, isLoad
     form.clearErrors();
   }, [form, step]);
 
-  const formItemClasses = getFormItemClassesArray(formStep.body, formItemHasValue);
+  const formItemClasses = getFormItemClassesArray(formStep.body, formValues);
 
   const handleSubmit = useCallback(
     async (data: any) => {
@@ -173,7 +205,7 @@ const AuthFormBuilder = ({ formStep, step, goBack, goForward, logout, me, isLoad
                         items={formItem.inputOptions.items}
                         defaultValue={defaultValues[formItem.key]}
                         disabled={
-                          (!!formItem.inputOptions.depends && !formItemHasValue(formItem.inputOptions.depends)) || isLoading || loading
+                          (!!formItem.inputOptions.depends && !formValues[formItem.inputOptions.depends]) || isLoading || loading
                         }
                       />
                     ))}

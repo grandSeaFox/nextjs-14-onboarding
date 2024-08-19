@@ -5,20 +5,24 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
 import { HOME_ROUTE, sidebarLinks } from '@/lib/constants';
-import { Sheet, SheetClose, SheetContent, SheetTrigger } from './ui/sheet';
+import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from './ui/sheet';
 import Footer from '@/components/Footer';
 import { useMobileNavbar } from '@/lib/providers/MobileNavbarProvider';
+import { useDriverTour } from '@/lib/providers/DriveTourProvider';
 
 const MobileNavbar = () => {
   const pathName = usePathname();
   const { isOpen, changeNavBar } = useMobileNavbar();
+  const { isDriveTourOngoing } = useDriverTour();
 
   return (
     <section className="w-full max-w-[264px] root-layout" id="mobile-navbar">
-      <Sheet open={isOpen} onOpenChange={changeNavBar}>
-        <SheetTrigger>
-          <Image src="/icons/hamburger.svg" width={30} height={30} alt="menu icon" className="cursor-pointer" />
-        </SheetTrigger>
+      <Sheet open={isOpen} onOpenChange={!isDriveTourOngoing ? changeNavBar : undefined}>
+        <SheetTitle>
+          <SheetTrigger>
+            <Image src="/icons/hamburger.svg" width={30} height={30} alt="menu icon" className="cursor-pointer" />
+          </SheetTrigger>
+        </SheetTitle>
         <SheetContent side="left" className="border-none bg-white max-w-[300px]">
           <Link
             href={HOME_ROUTE}
@@ -33,6 +37,7 @@ const MobileNavbar = () => {
                 {sidebarLinks.map(link => {
                   const isActive = pathName === link.route || pathName.startsWith(`${link.route}/`);
 
+
                   return (
                     <SheetClose asChild key={link.route}>
                       <Link
@@ -40,8 +45,10 @@ const MobileNavbar = () => {
                         key={link.label}
                         className={cn('mobilenav-sheet_close', {
                           'bg-appGradient': isActive,
+                          'cursor-not-allowed opacity-50': isDriveTourOngoing,
                         })}
                         id={link.id}
+                        onClick={isDriveTourOngoing ? (e) => e.preventDefault() : undefined}
                       >
                         <Image
                           src={link.imgURL!}

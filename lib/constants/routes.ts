@@ -11,6 +11,7 @@ export const INPUTS_ROUTE = '/inputs';
 export const COUNTRY_CITY_ROUTE = `${INPUTS_ROUTE}/country-city`;
 export const MULTISELECT_ROUTE = `${INPUTS_ROUTE}/multiselect`;
 export const CALENDAR_PICKER_ROUTE = `${INPUTS_ROUTE}/calendar-picker`;
+export const TEXT_ROUTE = `${INPUTS_ROUTE}/text`;
 
 export const PUBLIC_ROUTES = [REGISTRATION_ROUTE, LOGIN_ROUTE, LOGOUT_ROUTE, REGISTRATION_ROUTE, LOGIN_ROUTE];
 
@@ -33,6 +34,11 @@ export const sidebarLinks: SidebarLink[] = [
     route: INPUTS_ROUTE,
     label: 'Inputs',
     routes: [
+      {
+        id: 'nav-available-inputs-text',
+        route: TEXT_ROUTE,
+        label: 'Text',
+      },
       {
         id: 'nav-available-inputs-country-city',
         route: COUNTRY_CITY_ROUTE,

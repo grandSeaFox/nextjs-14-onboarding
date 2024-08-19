@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import '../lib/styles/skeleton-styles.css';
 import { useAuth } from '@/lib/providers/AuthProvider';
+import { useDriverTour } from '@/lib/providers/DriveTourProvider';
 interface FooterProps {
   type?: 'desktop' | 'mobile';
 }
@@ -22,6 +23,7 @@ const FooterSkeleton = ({ type = 'desktop' }: { type?: string }) => {
 
 const Footer = ({ type = 'desktop' }: FooterProps) => {
   const { user, logout } = useAuth();
+  const { isDriveTourOngoing } = useDriverTour();
 
   if (!user) {
     return <FooterSkeleton type={type} />;
@@ -33,7 +35,7 @@ const Footer = ({ type = 'desktop' }: FooterProps) => {
         <h1 className="text-14 truncate font-semibold text-gray-600">{user?.name}</h1>
         <p className="text-14 truncate font-normal text-gray-600">{user?.email}</p>
       </div>
-      <Button variant="link" className="ml-auto mr-1 rounded" onClick={() => logout()} id="button-logout-1">
+      <Button variant="link" className="ml-auto mr-1 rounded" onClick={() => logout()} id="button-logout-1" disabled={isDriveTourOngoing}>
         <Image src="/icons/logout.svg" fill alt="logout" className="hover:bg-gray-50 rounded" />
       </Button>
     </footer>

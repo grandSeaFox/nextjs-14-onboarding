@@ -9,12 +9,14 @@ import { useTourState } from '@/lib/hooks/useTourState';
 import useAnalytics from '@/lib/hooks/useAnalytics';
 import useViewPort from '@/lib/hooks/useViewPort';
 import { useMobileNavbar } from '@/lib/providers/MobileNavbarProvider';
+import { useDriverTour } from '@/lib/providers/DriveTourProvider';
 
 const DriverTour = () => {
   const shouldShowTour = useTourState();
   const { trackEvent } = useAnalytics();
   const { isMobile } = useViewPort();
   const { changeNavBar } = useMobileNavbar();
+  const { changeDriveTour } = useDriverTour();
   const tourStartedRef = useRef(false);
 
   const mobileOpenAndCloseNav = useCallback((button: 'prev' | 'next', driverObj: Driver) => {
@@ -52,6 +54,9 @@ const DriverTour = () => {
           if(isMobile) mobileOpenAndCloseNav('next', driverObj);
           setTimeout(() => driverObj.moveNext(), 100);
         },
+        onDestroyed: () => {
+          changeDriveTour();
+        },
         popoverClass: 'driverjs-theme',
         showProgress: true,
         allowClose: false,
@@ -62,13 +67,16 @@ const DriverTour = () => {
         changeNavBar();
       }
 
-      setTimeout(() => driverObj.drive(), 300)
-      localStorage.setItem('hasSeenTour', 'true');
+      setTimeout(() => {
+        driverObj.drive();
+        changeDriveTour();
+        }, 100)
       return () => {
         driverObj.destroy();
+        localStorage.setItem('hasSeenTour', 'true');
       };
     }
-  }, [shouldShowTour, isMobile, changeNavBar, trackEvent, mobileOpenAndCloseNav]);
+  }, [shouldShowTour, isMobile, changeNavBar, trackEvent, mobileOpenAndCloseNav, changeDriveTour]);
 
   return null;
 };
