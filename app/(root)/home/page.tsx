@@ -8,6 +8,7 @@ import { formatJson } from '@/lib/utils';
 import Image from 'next/image';
 import { useAuth } from '@/lib/providers/AuthProvider';
 import { useDriverTour } from '@/lib/providers/DriveTourProvider';
+import Link from 'next/link';
 
 const Home = () => {
   const { isLoading, user, logout } = useAuth();
@@ -38,16 +39,24 @@ const Home = () => {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
       <h1 className="text-24 flex mb-10">
-        <p>
-          Greetings <b>{user?.name}</b>, there have now been a total of <b>{user?.totalUsers}</b> users to register on this webpage.
-        </p>
+        Greetings <b className="ml-2">{user?.name}</b>, there have now been a total of <b className="mx-2">{user?.totalUsers}</b> users to register on this webpage.
       </h1>
       <h1 className="text-24 flex mb-10 text-gray-600">Check out the inputs to know what type of input you can use on your onboarding</h1>
-      <div className="flex gap-4">
-        <Button onClick={handleClick} className="w-[150px]" id="button-analytics" >
+      <div className="flex gap-4 ">
+        <Button onClick={handleClick} className="w-[150px]" id="button-analytics" variant="secondary">
           Test Analytics
         </Button>
-        <Button onClick={() => logout()} className="w-[150px]" iconRight={<Image src="/icons/logout.svg" fill alt="logout" />} id="button-logout" disabled={isDriveTourOngoing}>
+        <Button>
+          <Link href="https://github.com/grandSeaFox/nextjs-14-onboarding" target="_blank">Start me in Github</Link>
+        </Button>
+        <Button
+          onClick={() => logout()}
+          className="w-[150px]"
+          iconRight={<Image src="/icons/logout.svg" fill alt="logout" />}
+          id="button-logout"
+          disabled={isDriveTourOngoing}
+          variant="secondary"
+        >
           Logout
         </Button>
       </div>

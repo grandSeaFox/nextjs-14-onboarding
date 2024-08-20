@@ -5,11 +5,11 @@
 .driver-popover.driverjs-theme .driver-popover-title,
 .driver-popover.driverjs-theme .driver-popover-description,
 .driver-popover.driverjs-theme .driver-popover-progress-text {
-  @apply text-black-1 text-16;
+  @apply text-black-1 text-[16px];
 }
 
 .driver-popover.driverjs-theme .driver-popover-title {
-  @apply text-20;
+  @apply text-[20px];
 }
 
 

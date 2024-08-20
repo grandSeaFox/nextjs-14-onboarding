@@ -35,7 +35,7 @@ const config = {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         primary: {
-          DEFAULT: '#d3aef1',
+          DEFAULT: '#b465f1',
           foreground: 'hsl(var(--primary-foreground))',
           backgroundColor: 'hsl(var(--primary-backgroundColor))',
         },
@@ -66,7 +66,7 @@ const config = {
         fill: {
           1: 'rgba(255, 255, 255, 0.10)',
         },
-        appGradient: '#623fff',
+        appGradient: '#b465f1',
         indigo: {
           25: '#f0f0f6',
           100: '#cfcfee',
