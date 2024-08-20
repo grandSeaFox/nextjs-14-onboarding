@@ -17,9 +17,9 @@ const useFeatureFlags = (): Flags => {
       const fetchFlags = async () => {
         try {
           const allFlags = await flagsmith.getFlags();
-          const enabledFlags = await flagsmith.getDisabledFlagKeys();
+          const disabledFlags = await flagsmith.getDisabledFlagKeys();
           setAllFlags(allFlags);
-          setDisabledFlags(enabledFlags);
+          setDisabledFlags(disabledFlags);
         } catch (error) {
           console.error('Error fetching flags:', error);
         }
