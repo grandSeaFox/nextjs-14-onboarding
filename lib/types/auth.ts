@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { ButtonVariant } from './button';
-import { ICity, ICountry } from 'country-state-city';
 import { ApiResponse } from '@/lib/types/index';
 
 export type Login = 'login';
@@ -80,6 +79,7 @@ type ButtonIconPosition = 'left' | 'right';
 type ButtonType = 'submit' | 'reset' | 'button' | 'skip' | undefined;
 
 export interface BaseButtonProps {
+  key: string;
   variant?: ButtonVariant;
   type?: ButtonType;
   icon?: string;
@@ -92,12 +92,10 @@ export interface BaseButtonProps {
 }
 
 export interface ButtonProps extends BaseButtonProps {
-  key?: string;
   type: 'button';
   onClickFunction: () => void;
 }
 export interface OtherButtonProps extends BaseButtonProps {
-  key?: string;
   type?: 'submit' | 'reset' | undefined;
   onClickFunction?: never;
 }
@@ -123,21 +121,3 @@ export type BaseFormStep = BaseRegistrationStepSchema;
 export type FormStep<T> = StepRegistrationStepSchema<T>;
 
 export type RegistrationFormType<T> = Array<BaseFormStep> | Array<FormStep<T>>;
-
-export type NestedData = {
-  [key: string]:
-    | string
-    | boolean
-    | Array<string>
-    | {
-        [key: string]:
-          | string
-          | Date
-          | Array<string>
-          | ICity
-          | ICountry
-          | {
-              [key: string]: string | Date;
-            };
-      };
-};

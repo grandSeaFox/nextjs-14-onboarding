@@ -23,6 +23,7 @@ import { Form } from '../ui/form';
 import useAnalytics from '@/lib/hooks/useAnalytics';
 import { ApiResponse } from '@/lib/types';
 import { toast } from '@/components/ui/use-toast';
+import useFeatureFlags from '@/lib/hooks/useFeatureFlags';
 
 interface AuthFormBuilderProps {
   formStep: BaseFormStep | FormStep<OnboardingProps> | FormStep<SignUpParams> | FormStep<SignInProps>;
@@ -38,16 +39,15 @@ interface AuthFormBuilderProps {
 }
 const AuthFormBuilder = ({ formStep, step, goBack, goForward, logout, me, isLoading, user, setUser, totalSteps }: AuthFormBuilderProps) => {
   const [loading, setLoading] = useState(isLoading || false);
+  const { disabledFlags } = useFeatureFlags();
   const { trackEvent } = useAnalytics();
   const formStepSchema = formStep.stepValidationSchema;
-
   const form: UseFormReturn<any> = useForm({
     resolver: formStepSchema ? zodResolver(formStepSchema) : undefined,
     mode: 'onBlur',
     reValidateMode: 'onBlur',
     defaultValues: {},
   });
-
   const getMinLength = useCallback((formKey: string) => {
     if (!formStepSchema || typeof formStepSchema !== 'object' || !('shape' in formStepSchema)) {
       return 0;
@@ -192,7 +192,7 @@ const AuthFormBuilder = ({ formStep, step, goBack, goForward, logout, me, isLoad
               <div className="form-items">
                 {formStep.body.map((formItemRow: FormItemRow, index: number) => (
                   <div key={`${formItemRow[0].key}-container`} className={formItemClasses[index]}>
-                    {formItemRow.map((formItem: FormItemInterface) => (
+                    {formItemRow.map((formItem: FormItemInterface) => !disabledFlags?.includes(formItem.key) && (
                       <RegistrationInput
                         control={form.control}
                         key={formItem.key}
@@ -214,7 +214,7 @@ const AuthFormBuilder = ({ formStep, step, goBack, goForward, logout, me, isLoad
               </div>
             )}
             <div className="auth-button-group" data-action={formStep.actionButtons.length === 2}>
-              {formStep.actionButtons.map((button: ButtonInterface) => (
+              {formStep.actionButtons.map((button: ButtonInterface) => !disabledFlags?.includes(button.key) && (
                 <Button
                   key={button.key}
                   size="lg"

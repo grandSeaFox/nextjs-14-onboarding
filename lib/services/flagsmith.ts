@@ -1,4 +1,5 @@
 import flagsmith from 'flagsmith/isomorphic';
+import { getDisabledFlagKeys } from '@/lib/utils';
 
 class FlagsmithService {
   private static instance: FlagsmithService;
@@ -25,6 +26,12 @@ class FlagsmithService {
   async getFlags() {
     await this.init();
     return flagsmith.getAllFlags();
+  }
+
+  async getDisabledFlagKeys() {
+    await this.init();
+    const allFlags = flagsmith.getAllFlags();
+    return getDisabledFlagKeys(allFlags);
   }
 
   async getState() {

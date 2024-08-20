@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { FormItemRow } from './types/auth';
 import { ApiResponse, ErrorResponse, SidebarLink } from '@/lib/types';
+import { IFlags } from 'flagsmith/types';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -155,3 +156,9 @@ export const getFormItemClasses = (formItemRow: FormItemRow, formValues: {[key: 
 export const getFormItemClassesArray = (formStepBody: FormItemRow[], formValues: (key: string) => boolean) => {
   return formStepBody.map((formItemRow: FormItemRow) => cn(getFormItemClasses(formItemRow, formValues)));
 };
+
+export function getDisabledFlagKeys(flags: IFlags): string[] {
+  return Object.entries(flags)
+    .filter(([_, flagData]) => !flagData.enabled)
+    .map(([key, _]) => key);
+}
