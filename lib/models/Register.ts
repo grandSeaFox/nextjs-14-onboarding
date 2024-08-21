@@ -122,7 +122,7 @@ const registrationKYCFormSchema = z.object({
 });
 
 const RegistrationUserForm: FormStep<OnboardingProps> = {
-  key: 'kyc-form',
+  key: 'user-info-form',
   stepValidationSchema: registrationKYCFormSchema,
   title: 'Tell us about yourself',
   description: ['We want to make sure you get the most out of this example'],

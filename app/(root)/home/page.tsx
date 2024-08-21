@@ -39,15 +39,19 @@ const Home = () => {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
       <h1 className="text-24 flex mb-10">
-        Greetings <b className="ml-2">{user?.name}</b>, there have now been a total of <b className="mx-2">{user?.totalUsers}</b> users to register on this webpage.
+        <p>
+          Greetings <b>{user?.name}</b>, there have now been a total of <b>{user?.totalUsers}</b> users to register on this webpage.
+        </p>
       </h1>
       <h1 className="text-24 flex mb-10 text-gray-600">Check out the inputs to know what type of input you can use on your onboarding</h1>
-      <div className="flex gap-4 ">
+      <div className="flex gap-4 sm:flex-col ">
         <Button onClick={handleClick} className="w-[150px]" id="button-analytics" variant="secondary">
           Test Analytics
         </Button>
         <Button>
-          <Link href="https://github.com/grandSeaFox/nextjs-14-onboarding" target="_blank">Start me in Github</Link>
+          <Link href="https://github.com/grandSeaFox/nextjs-14-onboarding" target="_blank">
+            Start me in Github
+          </Link>
         </Button>
         <Button
           onClick={() => logout()}
